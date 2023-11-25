@@ -1,0 +1,11 @@
+{
+  "name": "todo_app",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "npm --prefix ./backend/ rum dev | npm --prefix ./frontend/ rum dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
