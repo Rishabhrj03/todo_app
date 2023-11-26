@@ -1,3 +1,7 @@
+* {
+  color: white;
+}
+
 body {
   text-align: center;
   background-color: #404040;
@@ -7,7 +11,6 @@ body {
   padding: 5px 8px;
   border-radius: 6px;
   background-color: rgb(34, 214, 34);
-  color: white;
   display: inline-block;
   font-size: 18px;
   font-weight: bold;
@@ -16,12 +19,18 @@ body {
 
 .button.danger {
   background-color: rgb(255, 38, 0);
+  color: white;
+}
+
+.success {
+  color: rgb(34, 214, 34);;
 }
 
 input {
   border: solid 1px #8080809c;
   border-radius: 4px;
   outline: none;
+  color: #202020;
   padding: 6px 10px;
   font-size: 16px;
 }
@@ -44,6 +53,14 @@ input {
   justify-content: space-between;
 }
 
+.align-self-flex-end {
+  align-self: flex-end;
+}
+
+.justify-content-flex-end {
+  justify-content: flex-end;
+}
+
 .align-items-center {
   align-items: center;
 }
@@ -54,6 +71,10 @@ input {
 
 .align-self-start {
   align-self: flex-start;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
 }
 
 .gap-2 {
@@ -85,13 +106,23 @@ input {
 }
 
 .heading-4 {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: bold;
+  letter-spacing: 1.2px;
 }
 
 .todo-wrapper {
   max-width: 700px;
   margin: auto;
+}
+
+
+.todo-wrapper form{
+  position: sticky;
+  position: -webkit-sticky;
+  background-color: #404040;
+  top: 0;
+  padding-top: 10px;
 }
 
 .card {
@@ -102,16 +133,8 @@ input {
   background-color: #404040;
 }
 
-.align-self-flex-end {
-  align-self: flex-end;
-}
-
-.justify-content-flex-end {
-  justify-content: flex-end;
-}
-
 .text-fade {
-  color: #606060DD;
+  color: #FFFFFFAA;
 }
 
 .screen-wrapper {
@@ -127,9 +150,31 @@ input {
   background-color: #8080809c;
 }
 
-.dialog > content {
-
+.description {
+  font-size: 18px;
 }
 /* .align-self-flex-end {
   align-self: flex-end;
 } */
+
+@media only screen and (max-width: 600px) {
+  .todo-header {
+    flex-direction: column;
+  }
+
+  .todo-header .align-items-start {
+    align-items: unset;
+  }
+
+  .todo-header .align-self-flex-end {
+    align-self: unset;
+  }
+
+  .task-section {
+    flex-direction: column;
+  }
+
+  .task-section .flex-column.align-items-start {
+    margin-bottom: 10px;
+  }
+}

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Column } from './TodoList'
 import Dialog from './Dialog';
 
-export default function EditTodoItemPopup({ onEdit, title = "", description = "", onClose }) {
+export default function EditPopup({ onEdit, title = "", description = "", onClose }) {
 
   const [Title, setTitle] = useState(title)
   const [Description, setDescription] = useState(description)
@@ -17,7 +17,7 @@ export default function EditTodoItemPopup({ onEdit, title = "", description = ""
 
   function handleSubmit(e) {
     e.preventDefault();
-    onEdit(title, description)
+    onEdit(Title, Description)
   }
 
   return (
@@ -27,11 +27,11 @@ export default function EditTodoItemPopup({ onEdit, title = "", description = ""
 
           <Column className='align-items-start' >
             <span className='heading-4 mb-1'>Title</span>
-            <input value={Title} onChange={handleTitleChange} placeholder='Title' type="text" />
+            <input required value={Title} onChange={handleTitleChange} placeholder='Title' type="text" />
           </Column>
           <Column className='align-items-start' >
             <span className='heading-4 mb-1'>Description</span>
-            <input value={Description} onChange={handleDescriptionChange} placeholder='Description' type="text" />
+            <input required value={Description} onChange={handleDescriptionChange} placeholder='Description' type="text" />
           </Column>
           <div className='flex flex-sb danger'>
             <Button
@@ -39,8 +39,8 @@ export default function EditTodoItemPopup({ onEdit, title = "", description = ""
               onClick={onClose}
             />
             <Button
-              title={"Add"}
-              onClick={onEdit}
+              title={"Edit"}
+              // onClick={onEdit}
             />
           </div>
         </div>

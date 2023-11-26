@@ -1,9 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TodoListItem from './TodoListItem'
-import Dialog from './Dialog'
+import axios from '../config/axios'
+import { TODO_ENDPOINT } from '../config/endpoints';
 
 export default function TodoList() {
 
+  useEffect( ()=>{
+    getAllTodos();
+  }, []);
+
+  const [todoList, setTodoList] = useState([])
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
 
@@ -15,12 +21,29 @@ export default function TodoList() {
     setDescription(e.target.value)
   }
 
-  function handleSubmit(e) {
-    alert("TAPPED")
+  async function handleSubmit(e) {
     e.preventDefault();
     // addTodo(title, description)
-    setDescription("")
-    setTitle("")
+    try {
+      const payload = {
+        title,
+        description
+      }
+      const {data} = await axios.post(TODO_ENDPOINT, payload );
+      // console.log(res);
+      setTodoList([...todoList, data])
+      setDescription("")
+      setTitle("")
+    } catch (error) {}
+  }
+
+  async function getAllTodos() {
+    try {
+      const {data} = await axios.get(TODO_ENDPOINT)
+      setTodoList(data)
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   // const addTodo = ()=>{
@@ -31,7 +54,7 @@ export default function TodoList() {
       <h1>My Todos</h1>
       <section className='card todo-wrapper'>
           <form onSubmit={handleSubmit} >
-        <div className='flex gap-2' >
+        <div className='flex gap-2 flex-wrap todo-header' >
 
             <Column className='align-items-start' >
               <span className='heading-4 mb-1'>Title</span>
@@ -49,12 +72,14 @@ export default function TodoList() {
           </form>
         <hr />
         
-        <Column>
+        <Column className='gap-half'>
           <Button
-            className='align-self-start mb-1'
+            className='align-self-start '
             title={"Tasks"}
           />
-          <TodoListItem title={"Task 1"} description={"Description"} />
+
+          {todoList.map( (todo) => <TodoListItem {...todo} onDelete={getAllTodos} onEdit={getAllTodos} /> ) }
+          
         </Column>
       </section>
     </>

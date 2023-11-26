@@ -1,23 +1,44 @@
 import React, { useState } from 'react'
 import { Button, Column } from './TodoList'
 import ConfirmationPopup from './ConfirmationPopup'
-import EditTodoItemPopup from './EditTodoItemPopup'
+import EditPopup from './EditPopup'
+
+import axios from '../config/axios'
+import { TODO_ENDPOINT } from '../config/endpoints';
 
 export default function TodoListItem({title, description, id, onDelete, onEdit }) {
 
   const [openEditDialog, setOpenEditDialog] = useState(false)
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
 
-  function handleEdit(title, description) {
-    alert(title + "" + description)
+  async function handleEdit(title, description) {
+    const payload = {
+      title,
+      description,
+      id
+    }
+    try {
+      const res = await axios.put(`${TODO_ENDPOINT}/${id}`, payload )
+      onEdit()
+      toggleEditPopup()
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   function toggleEditPopup() {
     setOpenEditDialog(!openEditDialog)
   }
 
-  function onDelete() {
-    alert("dleete")
+  async function handleDelete() {
+    try {
+      const res = await axios.delete(`${TODO_ENDPOINT}/${id}` )
+      onDelete()
+      toggleDeletePopup()
+    } catch (error) {
+      console.error(error);
+    }
+    
   }
 
   function toggleDeletePopup() {
@@ -25,17 +46,17 @@ export default function TodoListItem({title, description, id, onDelete, onEdit }
   }
 
   return (
-    <div className='card flex flex-sb'>
+    <div className='card flex flex-sb flex-wrap task-section'>
       <Column className='align-items-start' >
-        <div className='heading-4' >{title}</div>
-        <span className='text-fade' >{description}</span>
+        <div className='heading-4 success' >{title}</div>
+        <span className='text-fade description' >{description}</span>
       </Column>
       <div className='flex align-items-center gap-half'>
         <Button title={"Edit"} onClick={toggleEditPopup} />
         <Button title={"Delete"} onClick={toggleDeletePopup} />
       </div>
-      {openDeleteDialog && <ConfirmationPopup onClose={toggleDeletePopup} onConfirm={toggleDeletePopup} />}
-      {openEditDialog && <EditTodoItemPopup title={title} description={description} onClose={toggleEditPopup} onEdit={handleEdit} />}
+      {openDeleteDialog && <ConfirmationPopup onClose={toggleDeletePopup} onConfirm={handleDelete} />}
+      {openEditDialog && <EditPopup title={title} description={description} onClose={toggleEditPopup} onEdit={handleEdit} />}
     </div>
   )
 }
